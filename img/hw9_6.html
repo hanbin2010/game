@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>作业 6</title>
+    </head>
+    <body>
+        <div id="fan">
+            <div id="sample2" class="test">
+                <div id="sample2" >
+                    <div id="sample3">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="utils.js">
+        </script>
+        <script>
+            var closestTag = function(element, tagName){
+                var html = e('html')
+                var pe = element.parentElement
+                var t1 = tagName.toUpperCase()
+                var t2 = pe.tagName
+
+                if(t1 == t2) {
+                    return pe
+                } else if (pe == html) {
+                    return null
+                } else {
+                    return closestTag(pe, tagName)
+                }
+            }
+
+            var testClosestTag = function () {
+                var div1 = e('#sample3')
+                var father1 = closestTag(div1, 'div')
+                log("father1", father1)
+            }
+
+            var __main = function () {
+                testClosestTag()
+            }
+
+            __main()
+        </script>
+    </body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>game 1</title>
+    <style media="screen">
+    canvas{
+        border: 2px black solid;
+    }
+    </style>
+    <!-- gua game js -->
+    <script type="text/javascript" src="guagame/utils.js"></script>
+    <script type="text/javascript" src="guagame/gua_scene.js"></script>
+    <script type="text/javascript" src="guagame/gua_game.js"></script>
+    <script type="text/javascript" src="guagame/gua_img.js"></script>
+    <script type="text/javascript" src="guagame/gua_particle_system.js"></script>
+    <script type="text/javascript" src="guagame/gua_label.js"></script>
+    <script type="text/javascript" src="guagame/gua_animation.js"></script>
+    <!-- scene main -->
+    <script type="text/javascript" src="scene/main/scene.js"></script>
+    <script type="text/javascript" src="scene/title/scene_title.js"></script>
+    <!--  level -->
+    <!--  ctrl + enter -->
+    <!--  ctrl / -->
+    <!--  ctrl shift d-->
+</head>
+<body>
+    <!--draw a canvase-->
+    <canvas id="id-canvas" width="170" height="300"></canvas>
+    <!-- <canvas id="id-canvas" width="170" height="300"></canvas> -->
+    <!--a range input for speed-->
+    <input id="id-input-speed" type="range" value="1">
+    <div class="">
+    </div>
+    <div class="">
+        <label>
+            <input class="gua-auto-slider" type="range"
+            value=""
+            data-value="config.player_speed"
+            >
+            player speed:
+            <span class="gua-label"></span>
+        </label>
+    </div>
+    <div class="">
+        <!-- 这一块可以从配置文件里读取 -->
+        <label>
+            <input class="gua-auto-slider" type="range"
+            value=""
+            data-value="config.bullet_speed"
+            >
+            bullet speed:
+            <span class="gua-label"></span>
+        </label>
+    </div>
+    <div class="">
+        <label>
+            <input class="gua-auto-slider" type="range"
+            value=""
+            max="10"
+            data-value="config.fire_cooldown"
+            >
+            bullet cooldown speed:
+            <span class="gua-label"></span>
+        </label>
+    </div>
+    <div class="">
+        <label>
+            <input class="gua-auto-slider" type="range"
+            value=""
+            min="-10"
+            max="10"
+            data-value="config.cloud_speed"
+            >
+            cloud speed:
+            <span class="gua-label"></span>
+        </label>
+    </div>
+    <!--start the main function-->
+    <script src="main.js">
+    </script>
+    <script>
+    //选取所有的元素
+    var es  = sel => document.querySelectorAll(sel)
+    //绑定所有的元素
+    var bindAll = function (sel, eventName, callback) {
+        //元素名，事件名，回调转函数
+        var l = es(sel)
+        for (var i = 0; i < l.length; i++) {
+            var input = l[i]
+            //永远不要传一个匿名参数
+            //而是开一个匿名函数
+            //可以做更多的事情
+            input.addEventListener(eventName,function (event) {
+                callback(event)
+            })
+        }
+    }
+
+    //具体定义到底是那个元素，怎样回掉调
+    bindAll('.gua-auto-slider','input',function (event) {
+        var target = event.target
+        var bindVar = target.dataset.value
+        log("bindVar",bindVar)
+        var v = target.value
+        log("value",v)
+        //文字列を式として評価
+        //実際にやっていることはconfig.xxx = value
+        eval(bindVar + "=" + v)
+        //label
+        var label = target.closest('label').querySelector('.gua-label')
+        label.innerText = v
+    })
+
+    </script>
+</body>
+</html>
