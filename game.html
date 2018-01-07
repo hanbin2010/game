@@ -23,6 +23,8 @@
     <!--  ctrl + enter -->
     <!--  ctrl / -->
     <!--  ctrl shift d-->
+    <!-- config -->
+    <script type="text/javascript" src="config.js"></script>
 </head>
 <body>
     <!--draw a canvase-->
@@ -32,28 +34,28 @@
     <input id="id-input-speed" type="range" value="1">
     <div class="">
     </div>
-    <div class="">
-        <label>
+    <div class="gua-controls">
+        <!-- <label>
             <input class="gua-auto-slider" type="range"
             value=""
             data-value="config.player_speed"
             >
             player speed:
             <span class="gua-label"></span>
-        </label>
+        </label> -->
     </div>
-    <div class="">
+    <!-- <div class=""> -->
         <!-- 这一块可以从配置文件里读取 -->
-        <label>
+        <!-- <label>
             <input class="gua-auto-slider" type="range"
             value=""
             data-value="config.bullet_speed"
             >
             bullet speed:
             <span class="gua-label"></span>
-        </label>
-    </div>
-    <div class="">
+        </label> -->
+    <!-- </div> -->
+    <!-- <div class="">
         <label>
             <input class="gua-auto-slider" type="range"
             value=""
@@ -75,13 +77,15 @@
             cloud speed:
             <span class="gua-label"></span>
         </label>
-    </div>
+    </div> --> -->
     <!--start the main function-->
     <script src="main.js">
     </script>
     <script>
     //选取所有的元素
     var es  = sel => document.querySelectorAll(sel)
+
+
     //绑定所有的元素
     var bindAll = function (sel, eventName, callback) {
         //元素名，事件名，回调转函数
@@ -97,21 +101,59 @@
         }
     }
 
-    //具体定义到底是那个元素，怎样回掉调
-    bindAll('.gua-auto-slider','input',function (event) {
-        var target = event.target
-        var bindVar = target.dataset.value
-        log("bindVar",bindVar)
-        var v = target.value
-        log("value",v)
-        //文字列を式として評価
-        //実際にやっていることはconfig.xxx = value
-        eval(bindVar + "=" + v)
-        //label
-        var label = target.closest('label').querySelector('.gua-label')
-        label.innerText = v
-    })
+    var bindEvents = function () {
+        bindAll('.gua-auto-slider','input',function (event) {
+            var target = event.target
+            var bindVar = target.dataset.value
+            // log("bindVar",bindVar)
+            var v = target.value
+            // log("value",v)
+            //文字列を式として評価
+            //実際にやっていることはconfig.xxx = value
+            eval(bindVar + ".value=" + v)
+            //label
+            var label = target.closest('label').querySelector('.gua-label')
+            label.innerText = v
+        })
+    }
 
+    var templateControl = (key, item) => {
+        var i = item
+        log("item._comment", item._comment)
+        var t = `
+        <div>
+            <label>
+                <input class="gua-auto-slider" type="range"
+                value=${item.value}
+                max ="300"
+                data-value="config.${key}"
+                >
+                ${item._comment}:
+                <span class="gua-label"></span>
+            </label>
+        </div>
+        `
+
+        return t
+    }
+
+    var insertControls = () => {
+        var keys = Object.keys(config)
+        var div = e('.gua-controls')
+        for (var k of keys) {
+            var item = config[k]
+            var html = templateControl(k, item)
+            div.insertAdjacentHTML('beforeend', html)
+        }
+    }
+
+    var __main =  () => {
+        insertControls()
+        //具体定义到底是那个元素，怎样回调
+        bindEvents()
+    }
+
+    __main()
     </script>
 </body>
 </html>

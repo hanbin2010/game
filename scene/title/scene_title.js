@@ -3,7 +3,7 @@ class Pipes {
         this.game = game
         this.pipes = []
         this.pipeSpace = 50
-        this.guanzi = 150
+        this.guanzi = 160
         this.colOfPipe = 3
         for (var i = 0; i < this.colOfPipe; i++) {
             var p1 = GuaImage.new(game, 'pipe')
@@ -38,18 +38,34 @@ class Pipes {
         log("resetPipePosition p2.y", p2.y)
     }
 
-    update(){
+    debug() {
+        this.pipeSpace = config.pipeSpace.value
+        this.guanzi = config.guanzi.value
+
+    }
+
+    update() {
         if(window.paused) {
             return
         }
-        for (var p of this.pipes) {
-            p.x -= 5
-            if(p.x < -70) {
-                p.x += this.colOfPipe * this.guanzi
+        for (var i = 0; i < this.pipes.length / 2 ; i += 2) {
+            var p1 = this.pipes[i]
+            var p2 = this.pipes[i + 1]
+            p1.x -= 5
+            p2.x -= 5
+            if(p1.x < -70) {
+                p1.x += this.colOfPipe * this.guanzi
+                // this.resetPipePosition()
             }
-            log('after update', p)
+            if(p2.x < -70) {
+                p2.x += this.colOfPipe * this.guanzi
+                this.resetPipePosition(p1, p2)
+            }
         }
-        // p.flipY = !p.flipY
+        // for (var p of this.pipes) {
+        //     log('after update', p)
+        // }
+        // // p.flipY = !p.flipY
     }
 
     draw(){
